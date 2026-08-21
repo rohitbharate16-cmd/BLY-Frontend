@@ -8,5 +8,5 @@ export function optimizedImage(url, width, quality = 78) {
   if (index === -1) return url
   const base = url.slice(0, index)
   const objectPath = url.slice(index + publicObjectPath.length).split('?')[0]
-  return `${base}/storage/v1/render/image/public/${objectPath}?width=${width}&quality=${quality}&format=auto`
+  return `${base}/storage/v1/render/image/public/${objectPath}?width=${width}&quality=${quality}`
 }
