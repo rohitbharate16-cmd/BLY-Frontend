@@ -37,9 +37,15 @@ const STAGES = [
 
 export default function IngredientLab({ products = [] }) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [imageFailed, setImageFailed] = useState(false)
 
   const stage = STAGES[activeIndex]
   const product = products.length ? products[activeIndex % products.length] : null
+  const productImage = product?.image
+
+  useEffect(() => {
+    setImageFailed(false)
+  }, [productImage])
 
   return (
     <section className="py-16 md:py-24">
@@ -73,15 +79,25 @@ export default function IngredientLab({ products = [] }) {
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <AnimatePresence initial={false}>
-                  {product && (
+                  {productImage && !imageFailed && (
                     <motion.img
                       key={product.id ?? stage.id}
-                      src={optimizedImage(product.image, 1200)}
+                      src={optimizedImage(productImage, 1200)}
                       alt={product.name}
                       className="h-[62%] w-auto object-contain drop-shadow-[0_30px_40px_rgba(46,33,28,0.28)]"
                       initial={{ opacity: 0, scale: 0.97 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.97 }}
+                      transition={{ duration: 0.55, ease: premiumEase }}
+                      onError={() => setImageFailed(true)}
+                    />
+                  )}
+                  {(!productImage || imageFailed) && (
+                    <motion.div
+                      key={`${stage.id}-fallback`}
+                      className="h-[62%] w-auto max-w-[70%] rounded-full border border-espresso/20 bg-cream/80"
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.55, ease: premiumEase }}
                     />
                   )}
