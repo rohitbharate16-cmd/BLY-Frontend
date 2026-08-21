@@ -1,49 +1,96 @@
-import { apiClient } from './client'
+import { supabase } from '../lib/supabase'
 import { cached, invalidateCached } from './cache'
-
-// Centralized product data access. This replaces the previous direct
-// Supabase calls in src/services/products.js — the frontend now talks to
-// the backend API, which is the only layer allowed to query Supabase for
-// product data. The returned shape is unchanged so existing pages/
-// components keep working without modification:
-//
-// { id, name, slug, category, categoryName, price, shortDescription,
-//   description, howToUse, concern, tags, rating, reviewCount, featured,
-//   bestseller, newArrival, image, isActive }
 
 const CUSTOMER_CATEGORY_SLUGS = ['face', 'body', 'fragrance', 'wellness']
 
+function mapProduct(item) {
+  const cat = item.categories || {}
+  return {
+    id: item.id,
+    name: item.name,
+    slug: item.slug,
+    category: cat.slug || cat.id,
+    categoryName: cat.name,
+    categoryId: item.category_id,
+    type: item.product_type,
+    price: item.price,
+    shortDescription: item.short_description,
+    description: item.description,
+    howToUse: item.how_to_use,
+    concern: item.concern,
+    tags: item.tags || [],
+    rating: item.rating,
+    reviewCount: item.review_count,
+    featured: item.featured,
+    bestseller: item.bestseller,
+    newArrival: item.new_arrival,
+    image: item.image_url,
+    isActive: item.is_active,
+  }
+}
+
+async function fetchProducts({ categorySlug, flag } = {}) {
+  let query = supabase
+    .from('products')
+    .select('*, categories!inner(*)')
+    .eq('is_active', true)
+    .in('categories.slug', CUSTOMER_CATEGORY_SLUGS)
+    .order('created_at', { ascending: false })
+
+  if (categorySlug) query = query.eq('categories.slug', categorySlug)
+  if (flag) query = query.eq(flag, true)
+
+  const { data, error } = await query
+  if (error) throw new Error(error.message)
+  return data.map(mapProduct)
+}
+
+async function findProductByColumn(column, value) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*, categories(*)')
+    .eq(column, value)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (error) {
+    if (error.code === '22P02') return null
+    throw new Error(error.message)
+  }
+  return data
+}
+
 export function getProducts() {
-  return cached('catalog:all', () => apiClient.get('/products'))
+  return cached('catalog:all', () => fetchProducts())
 }
 
 export async function getProductsByCategory(categorySlug) {
   if (!CUSTOMER_CATEGORY_SLUGS.includes(categorySlug)) return []
-
-  return cached(`catalog:category:${categorySlug}`, () => apiClient.get(`/products?category=${encodeURIComponent(categorySlug)}`))
+  return cached(`catalog:category:${categorySlug}`, () => fetchProducts({ categorySlug }))
 }
 
 export function getFeaturedProducts() {
-  return cached('catalog:featured', () => apiClient.get('/products?flag=featured'))
+  return cached('catalog:featured', () => fetchProducts({ flag: 'featured' }))
 }
 
 export function getBestsellers() {
-  return cached('catalog:bestseller', () => apiClient.get('/products?flag=bestseller'))
+  return cached('catalog:bestseller', () => fetchProducts({ flag: 'bestseller' }))
 }
 
 export function getNewArrivals() {
-  return cached('catalog:new-arrival', () => apiClient.get('/products?flag=new_arrival'))
+  return cached('catalog:new-arrival', () => fetchProducts({ flag: 'new_arrival' }))
 }
 
 export async function getProductById(id) {
   if (!id) return null
-
   try {
-    return await cached(`catalog:product:${id}`, () => apiClient.get(`/products/${encodeURIComponent(id)}`))
+    return await cached(`catalog:product:${id}`, async () => {
+      let data = await findProductByColumn('id', id)
+      if (!data) data = await findProductByColumn('slug', id)
+      return data ? mapProduct(data) : null
+    })
   } catch (error) {
-    // Preserve prior behavior: a missing/inactive product resolves to null
-    // instead of throwing, so pages can render a "Product Not Found" state.
-    if (error.status === 404) return null
+    if (error.message?.includes('No rows')) return null
     throw error
   }
 }

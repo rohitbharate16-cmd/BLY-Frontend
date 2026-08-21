@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import AdminRoute from './components/auth/AdminRoute'
 import PlaceholderPage from './components/common/PlaceholderPage'
 import ErrorBoundary from './components/common/ErrorBoundary'
 
@@ -15,6 +16,7 @@ const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const Account = lazy(() => import('./pages/Account'))
 const Cart = lazy(() => import('./pages/Cart'))
+const Admin = lazy(() => import('./pages/Admin'))
 
 const placeholderRoutes = {
   '/search': { title: 'Search', subtitle: 'Search across our full collection of beauty and self-care essentials.' },
@@ -53,6 +55,14 @@ function App() {
                 <ProtectedRoute>
                   <Account />
                 </ProtectedRoute>
+              )}
+            />
+            <Route
+              path="/admin"
+              element={(
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
               )}
             />
             {Object.entries(placeholderRoutes).map(([path, props]) => (

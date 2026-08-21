@@ -1,29 +1,92 @@
-import { apiClient } from './client'
+const ADMIN_BASE = '/api/admin'
 
-const secured = { auth: true }
+async function adminFetch(path, options = {}) {
+  const response = await fetch(`${ADMIN_BASE}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  })
 
-export const getAdminSession = () => apiClient.get('/admin/me', secured)
-export const getAdminProducts = ({ search, category, sort } = {}) => {
+  if (response.status === 204) return null
+
+  const isJson = response.headers.get('content-type')?.includes('application/json')
+  const payload = isJson ? await response.json().catch(() => null) : null
+
+  if (!response.ok) {
+    const message = payload?.error?.message || payload?.message || `Request failed with status ${response.status}`
+    const error = new Error(message)
+    error.status = payload?.error?.status || response.status
+    throw error
+  }
+
+  return payload?.data ?? payload
+}
+
+const secured = { headers: {} }
+
+export function getAdminSession() {
+  return adminFetch('/me', { method: 'GET', ...secured })
+}
+
+export function getAdminProducts({ search, category, sort } = {}) {
   const params = new URLSearchParams()
   if (search) params.set('search', search)
   if (category) params.set('category', category)
   if (sort) params.set('sort', sort)
   const query = params.toString()
-  return apiClient.get(`/admin/products${query ? `?${query}` : ''}`, secured)
+  return adminFetch(`/products${query ? `?${query}` : ''}`, { method: 'GET', ...secured })
 }
-export const getAdminProduct = (id) => apiClient.get(`/admin/products/${encodeURIComponent(id)}`, secured)
-export const createAdminProduct = (payload) => apiClient.post('/admin/products', payload, secured)
-export const updateAdminProduct = (id, payload) => apiClient.put(`/admin/products/${encodeURIComponent(id)}`, payload, secured)
-export const archiveAdminProduct = (id) => apiClient.delete(`/admin/products/${encodeURIComponent(id)}`, secured)
-export const uploadAdminProductImage = (file) => apiClient.upload('/admin/uploads/product-image', file, {
-  ...secured,
-  headers: { 'Content-Type': file.type, 'X-File-Name': encodeURIComponent(file.name) },
-})
 
-export const getAdminCategories = () => apiClient.get('/admin/categories', secured)
-export const createAdminCategory = (payload) => apiClient.post('/admin/categories', payload, secured)
-export const updateAdminCategory = (id, payload) => apiClient.put(`/admin/categories/${encodeURIComponent(id)}`, payload, secured)
-export const deleteAdminCategory = (id) => apiClient.delete(`/admin/categories/${encodeURIComponent(id)}`, secured)
+export function getAdminProduct(id) {
+  return adminFetch(`/products/${encodeURIComponent(id)}`, { method: 'GET', ...secured })
+}
 
-export const getAdminHomeContent = () => apiClient.get('/admin/content/home', secured)
-export const updateAdminHomeContent = (payload) => apiClient.put('/admin/content/home', payload, secured)
+export function createAdminProduct(payload) {
+  return adminFetch('/products', { method: 'POST', ...secured, body: JSON.stringify(payload) })
+}
+
+export function updateAdminProduct(id, payload) {
+  return adminFetch(`/products/${encodeURIComponent(id)}`, { method: 'PUT', ...secured, body: JSON.stringify(payload) })
+}
+
+export function archiveAdminProduct(id) {
+  return adminFetch(`/products/${encodeURIComponent(id)}`, { method: 'DELETE', ...secured })
+}
+
+export function uploadAdminProductImage(file) {
+  return adminFetch('/uploads', {
+    method: 'POST',
+    ...secured,
+    headers: {
+      'Content-Type': file.type,
+      'X-File-Name': encodeURIComponent(file.name),
+    },
+    body: file,
+  })
+}
+
+export function getAdminCategories() {
+  return adminFetch('/categories', { method: 'GET', ...secured })
+}
+
+export function createAdminCategory(payload) {
+  return adminFetch('/categories', { method: 'POST', ...secured, body: JSON.stringify(payload) })
+}
+
+export function updateAdminCategory(id, payload) {
+  return adminFetch(`/categories/${encodeURIComponent(id)}`, { method: 'PUT', ...secured, body: JSON.stringify(payload) })
+}
+
+export function deleteAdminCategory(id) {
+  return adminFetch(`/categories/${encodeURIComponent(id)}`, { method: 'DELETE', ...secured })
+}
+
+export function getAdminHomeContent() {
+  return adminFetch('/content', { method: 'GET', ...secured })
+}
+
+export function updateAdminHomeContent(payload) {
+  return adminFetch('/content', { method: 'PUT', ...secured, body: JSON.stringify(payload) })
+}
