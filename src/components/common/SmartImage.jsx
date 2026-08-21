@@ -1,11 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { cls } from '../../utils/cls'
 import { optimizedImage } from '../../utils/image'
 
-// Centralizes responsive Supabase-transformed sources plus a broken-image
-// fallback so a missing/failed asset never leaves a blank or broken visual
-// area. The wrapper keeps the caller's aspect-ratio classes so nothing
-// shifts layout when the fallback appears.
 export default function SmartImage({
   src,
   alt = '',
@@ -20,6 +16,10 @@ export default function SmartImage({
   const [failed, setFailed] = useState(false)
   const showFallback = !src || failed
   const maxWidth = widths[widths.length - 1]
+
+  useEffect(() => {
+    setFailed(false)
+  }, [src])
 
   return (
     <div className={cls('relative overflow-hidden', className)}>

@@ -92,6 +92,10 @@ export function ImageReveal({ src, alt, className, imageClassName, loading = 'la
   const [failed, setFailed] = useState(false)
   const showFallback = !src || failed
 
+  useEffect(() => {
+    setFailed(false)
+  }, [src])
+
   return (
     <motion.div
       className={cls('overflow-hidden', className)}

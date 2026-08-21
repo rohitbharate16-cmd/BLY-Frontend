@@ -45,6 +45,11 @@ export default function CinematicMedia({
   const [videoFailed, setVideoFailed] = useState(false)
   const [imageFailed, setImageFailed] = useState(false)
 
+  useEffect(() => {
+    setImageFailed(false)
+    setVideoFailed(false)
+  }, [src, poster, fallbackSrc])
+
   // Lazy-load below-the-fold media: don't request video/gif bytes until the
   // section is actually about to enter the viewport.
   useEffect(() => {
