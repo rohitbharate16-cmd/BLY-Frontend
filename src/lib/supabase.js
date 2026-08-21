@@ -7,9 +7,16 @@ const configurationError = {
   message: 'Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to frontend/.env.',
 }
 
-// Keep the storefront usable when it is started before its environment file
-// has been configured. `createClient` throws immediately for missing values,
-// which previously prevented React from rendering at all.
+let supabaseClient = null
+
+try {
+  if (supabaseUrl && supabaseAnonKey) {
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey)
+  }
+} catch (error) {
+  console.error('[supabase] Failed to initialize client:', error)
+}
+
 const unconfiguredClient = {
   auth: {
     getSession: async () => ({ data: { session: null }, error: configurationError }),
@@ -24,10 +31,8 @@ const unconfiguredClient = {
   },
 }
 
-export const supabase = isSupabaseConfigured()
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : unconfiguredClient
+export const supabase = supabaseClient || unconfiguredClient
 
 export function isSupabaseConfigured() {
-  return Boolean(supabaseUrl) && Boolean(supabaseAnonKey)
+  return Boolean(supabaseClient)
 }
