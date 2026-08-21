@@ -103,7 +103,11 @@ export default function ProductDetails() {
   const increment = () => setQuantity((q) => q + 1)
   const decrement = () => setQuantity((q) => (q > 1 ? q - 1 : 1))
   const handleAddToBag = () => {
-    addItem(product, quantity)
+    const success = addItem(product, quantity)
+    if (!success) {
+      navigate('/login')
+      return
+    }
     setAddedToBag(true)
   }
 
@@ -121,7 +125,7 @@ export default function ProductDetails() {
               src={product.image}
               alt={product.name}
               className="aspect-[4/5] w-full max-w-[32rem] border border-[#E8DED2] bg-paper shadow-[0_26px_50px_-34px_rgba(46,33,28,0.36)] lg:h-[min(68vh,40rem)] lg:w-[min(100%,32rem)]"
-              imageClassName="h-full w-full object-cover object-center"
+              imageClassName="h-full w-full object-contain object-center"
               loading="eager"
               priority
               eager

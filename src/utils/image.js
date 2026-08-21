@@ -1,7 +1,7 @@
 // Supabase Image Transformations serve smaller, correctly sized variants from
 // the same public object. External image URLs remain untouched as a safe
 // fallback.
-export function optimizedImage(url, width, quality = 78) {
+export function optimizedImage(url, width, quality = 70) {
   if (!url || !width) return url
   const publicObjectPath = '/storage/v1/object/public/'
   const index = url.indexOf(publicObjectPath)

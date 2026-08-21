@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
 import Reveal from '../components/common/Reveal'
 import SectionLabel from '../components/common/SectionLabel'
 import CinematicMedia from '../components/motion/CinematicMedia'
@@ -12,7 +11,7 @@ const logoUrl = 'https://scntzjkdhyqliphbrlif.supabase.co/storage/v1/object/publ
 const values = [
   {
     title: 'Slow, on purpose',
-    copy: 'We’d rather ship one formula a year that we’re proud of than ten that are merely fine.',
+    copy: "We'd rather ship one formula a year that we're proud of than ten that are merely fine.",
   },
   {
     title: 'Ingredients you can say out loud',
@@ -23,86 +22,6 @@ const values = [
     copy: 'Considered packaging, but never precious — this is for daily rituals, not display cases.',
   },
 ]
-
-const philosophyStages = [
-  {
-    id: 'discovery',
-    label: 'Discovery',
-    copy: 'It starts with a question: what does your skin actually need, before anyone tells you what it should look like?',
-  },
-  {
-    id: 'care',
-    label: 'Care',
-    copy: 'Formulas built slowly, tested on real skin, and never rushed to market for a launch date.',
-  },
-  {
-    id: 'ritual',
-    label: 'Ritual',
-    copy: 'A few minutes, morning and night, that belong entirely to you — not a performance for anyone else.',
-  },
-  {
-    id: 'you',
-    label: 'You',
-    copy: 'Beauty that looks like you on your best day and your most ordinary one. That’s the whole point.',
-  },
-]
-
-function PhilosophyScroller({ images }) {
-  const sectionRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  })
-
-  const stageCount = philosophyStages.length
-  const activeIndexValue = useTransform(scrollYProgress, [0, 1], [0, stageCount - 1])
-
-  return (
-    <section ref={sectionRef} className="relative" style={{ height: `${stageCount * 100}vh` }}>
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-espresso">
-        <CinematicMedia
-          type="image"
-          src={images[0]}
-          alt=""
-          className="absolute inset-0 h-full w-full opacity-40"
-          overlay
-        />
-
-        <div className="container relative z-10 mx-auto px-6 lg:px-8">
-          <SectionLabel className="text-champagne">THE PHILOSOPHY</SectionLabel>
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              {philosophyStages.map((stageItem, index) => (
-                <PhilosophyLine
-                  key={stageItem.id}
-                  index={index}
-                  activeIndexValue={activeIndexValue}
-                  label={stageItem.label}
-                  copy={stageItem.copy}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function PhilosophyLine({ index, activeIndexValue, label, copy }) {
-  const distance = useTransform(activeIndexValue, (value) => Math.abs(value - index))
-  const opacity = useTransform(distance, [0, 0.6, 1], [1, 0.35, 0.16])
-  const y = useTransform(distance, [0, 1], [0, 14])
-
-  return (
-    <motion.div style={{ opacity, y }} className="border-t border-cream/15 py-6 first:border-t-0 md:py-8">
-      <div className="flex items-baseline gap-5">
-        <span className="font-display text-2xl text-champagne md:text-3xl">{label}</span>
-        <p className="max-w-md text-sm leading-relaxed text-cream/85 md:text-base">{copy}</p>
-      </div>
-    </motion.div>
-  )
-}
 
 export default function About() {
   const [gallery, setGallery] = useState([])
@@ -174,8 +93,8 @@ export default function About() {
                 everyday beauty could be gentler.
               </p>
               <p className="mt-4 max-w-md text-base leading-relaxed text-brown">
-                Today we’re a small team, still obsessed with the same question we
-                started with: what does beauty look like when it isn’t performed for
+                Today we are a small team, still obsessed with the same question we
+                started with: what does beauty look like when it is not performed for
                 anyone but you?
               </p>
               <Link to="/shop" className="btn-primary mt-8 inline-flex">
@@ -210,16 +129,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* Philosophy / Ritual: scroll-driven reveal */}
-      <PhilosophyScroller images={gallery} />
-
       {/* Values, with stronger visual hierarchy */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-6 lg:px-8">
           <Reveal className="max-w-xl">
             <SectionLabel>WHAT WE BELIEVE</SectionLabel>
             <h2 className="font-display text-2xl text-espresso sm:text-3xl">
-              Three ideas we don’t compromise on.
+              Three ideas we do not compromise on.
             </h2>
           </Reveal>
 
@@ -246,12 +162,12 @@ export default function About() {
         />
         <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
           <Reveal className="mx-auto max-w-2xl space-y-2">
-            <motion.p className="font-display text-2xl italic text-cream sm:text-3xl">
-              We’re not trying to reinvent you.
-            </motion.p>
-            <motion.p className="font-display text-2xl italic text-cream sm:text-3xl">
-              We’re just here to help you feel like you, slightly more often.
-            </motion.p>
+            <p className="font-display text-2xl italic text-cream sm:text-3xl">
+              We are not trying to reinvent you.
+            </p>
+            <p className="font-display text-2xl italic text-cream sm:text-3xl">
+              We are just here to help you feel like you, slightly more often.
+            </p>
             <Link to="/shop" className="btn-primary mt-8 inline-flex border-champagne bg-cream text-espresso hover:bg-champagne">
               DISCOVER THE EDIT
             </Link>

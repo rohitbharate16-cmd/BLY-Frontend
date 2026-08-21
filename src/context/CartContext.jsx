@@ -98,6 +98,7 @@ export function CartProvider({ children }) {
       itemCount,
       subtotal,
       addItem(product, quantity = 1) {
+        if (!userId) return false
         const amount = Math.max(1, Number(quantity) || 1)
         setItems((currentItems) => {
           const existing = currentItems.find((item) => item.id === product.id)
@@ -107,13 +108,14 @@ export function CartProvider({ children }) {
             item.id === product.id ? { ...item, quantity: item.quantity + amount } : item
           ))
         })
+        return true
       },
       updateQuantity(id, quantity) {
         const amount = Number(quantity) || 0
         setItems((currentItems) => (
           amount <= 0
             ? currentItems.filter((item) => item.id !== id)
-            : currentItems.map((item) => (item.id === id ? { ...item, quantity: amount } : item))
+            : currentItems.map((item) => item.id === id ? { ...item, quantity: amount } : item)
         ))
       },
       removeItem(id) {
@@ -123,7 +125,7 @@ export function CartProvider({ children }) {
         setItems([])
       },
     }
-  }, [items])
+  }, [items, userId])
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

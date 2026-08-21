@@ -88,7 +88,7 @@ export function StaggerItem({ children, className }) {
   )
 }
 
-export function ImageReveal({ src, alt, className, imageClassName, loading = 'lazy', priority = false, eager = false, imageWidth = 1200 }) {
+export function ImageReveal({ src, alt, className, imageClassName, loading = 'lazy', priority = false, eager = false, imageWidth = 900 }) {
   const [failed, setFailed] = useState(false)
   const showFallback = !src || failed
 

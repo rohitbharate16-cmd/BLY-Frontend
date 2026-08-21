@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, ShoppingBag } from 'lucide-react'
 import { cls } from '../../utils/cls'
@@ -9,6 +9,7 @@ import SmartImage from '../common/SmartImage'
 export default function ProductCard({ product, className }) {
   const [added, setAdded] = useState(false)
   const { addItem } = useCart()
+  const navigate = useNavigate()
 
   if (!product) return null
 
@@ -19,7 +20,11 @@ export default function ProductCard({ product, className }) {
   function handleQuickAdd(event) {
     event.preventDefault()
     event.stopPropagation()
-    addItem(product, 1)
+    const success = addItem(product, 1)
+    if (!success) {
+      navigate('/login')
+      return
+    }
     setAdded(true)
     window.setTimeout(() => setAdded(false), 1400)
   }
@@ -37,7 +42,7 @@ export default function ProductCard({ product, className }) {
           src={image}
           alt={name}
           className="h-full w-full"
-          imageClassName="h-full w-full object-cover object-center transition-transform duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
+          imageClassName="h-full w-full object-contain object-center transition-transform duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
           widths={[360, 720]}
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 50vw"
           loading="lazy"
