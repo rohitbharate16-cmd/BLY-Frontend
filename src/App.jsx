@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Navigate, Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import ProtectedRoute from './components/auth/ProtectedRoute'
@@ -33,44 +33,42 @@ function App() {
   return (
     <div className="App">
       <ErrorBoundary resetKey={location.pathname}>
-        <Suspense fallback={<div className="min-h-screen bg-cream" aria-busy="true" />}>
-          <Routes>
+        <Routes>
           <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/our-story" element={<About />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:category" element={<Shop />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/register" element={<Navigate to="/signup" replace />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/account"
-            element={(
-              <ProtectedRoute>
-                <Account />
-              </ProtectedRoute>
-            )}
-          />
-          {Object.entries(placeholderRoutes).map(([path, props]) => (
-            <Route key={path} path={path} element={<PlaceholderPage {...props} />} />
-          ))}
-          <Route
-            path="*"
-            element={
-              <PlaceholderPage
-                title="Page Not Found"
-                subtitle="The page you are looking for doesn't exist or has been moved."
-              />
-            }
-          />
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/our-story" element={<About />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/:category" element={<Shop />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/register" element={<Navigate to="/signup" replace />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/account"
+              element={(
+                <ProtectedRoute>
+                  <Account />
+                </ProtectedRoute>
+              )}
+            />
+            {Object.entries(placeholderRoutes).map(([path, props]) => (
+              <Route key={path} path={path} element={<PlaceholderPage {...props} />} />
+            ))}
+            <Route
+              path="*"
+              element={
+                <PlaceholderPage
+                  title="Page Not Found"
+                  subtitle="The page you are looking for doesn't exist or has been moved."
+                />
+              }
+            />
           </Route>
-          </Routes>
-        </Suspense>
+        </Routes>
       </ErrorBoundary>
     </div>
   )

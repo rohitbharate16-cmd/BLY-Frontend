@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import Reveal from '../common/Reveal'
 
 const footerLinks = {
@@ -44,13 +43,9 @@ export default function Footer() {
 
         <Reveal delay={120} className="mt-14 border-t border-[#E8DED2] pt-7 text-center">
           <Link to="/" aria-label="BLY home" className="inline-block">
-            <motion.span
-              className="inline-block font-display text-4xl font-semibold tracking-[0.14em] text-espresso sm:text-5xl"
-              whileHover={{ scale: 1.04, letterSpacing: '0.18em' }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            >
+            <span className="inline-block font-display text-4xl font-semibold tracking-[0.14em] text-espresso sm:text-5xl">
               BLY
-            </motion.span>
+            </span>
           </Link>
           <p className="mt-2 text-xs uppercase tracking-widest text-taupe">
             BEAUTY LIES IN YOU

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react'
 import { premiumEase } from '../motion/variants'
 import { optimizedImage } from '../../utils/image'
@@ -17,7 +17,6 @@ export default function Hero({ product, content }) {
   const image = content?.imageUrl || product?.image
   const [imageFailed, setImageFailed] = useState(false)
   const showImage = image && !imageFailed
-  const prefersReducedMotion = useReducedMotion()
 
   return (
     <section className="relative isolate overflow-hidden bg-[#e9e1d6]">
@@ -66,9 +65,10 @@ export default function Hero({ product, content }) {
             <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-paper sm:p-6"><div><p className="text-[10px] uppercase tracking-[0.2em] text-paper/70">The BLY ritual</p><p className="mt-1 font-display text-2xl leading-none">{product?.name || 'Made for your moment'}</p></div><span className="border border-paper/55 px-2 py-1 text-[10px] uppercase tracking-[0.14em]">01 / 01</span></figcaption>
           </motion.figure>
           <motion.div
-            className="absolute -bottom-7 -left-5 hidden h-24 w-24 items-center justify-center rounded-full border border-espresso/25 bg-cream/95 p-4 shadow-[0_16px_26px_-18px_rgba(46,33,28,.55)] lg:flex"
-            animate={prefersReducedMotion ? {} : { y: [0, -9, 0], rotate: [0, -3, 0] }}
-            transition={{ duration: 4.6, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -bottom-7 -left-5 hidden h-24 w-24 items-center justify-center border border-espresso/25 bg-cream/95 p-4 shadow-[0_16px_26px_-18px_rgba(46,33,28,.55)] lg:flex"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 1.2, ease: premiumEase }}
           >
             <img src={logoUrl} alt="BLY" className="h-full w-full object-contain" decoding="async" />
           </motion.div>
