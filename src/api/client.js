@@ -16,7 +16,9 @@ if (!API_BASE_URL) {
 // callers awaiting a promise that never resolved, which shows up to a
 // shopper as a page stuck on its loading state forever. Aborting after a
 // bound gives every caller's existing catch/error UI a chance to run.
-const REQUEST_TIMEOUT_MS = 15_000
+const REQUEST_TIMEOUT_MS = 60_000
+const MAX_RETRIES = 2
+const RETRY_DELAYS = [1200, 2800]
 
 export class ApiError extends Error {
   constructor(message, { status, details } = {}) {
@@ -50,10 +52,23 @@ async function fetchWithTimeout(url, options) {
   }
 }
 
+async function fetchWithRetry(url, options, retries = MAX_RETRIES) {
+  try {
+    return await fetchWithTimeout(url, options)
+  } catch (error) {
+    if (retries > 0 && (error.status === 0 || error.status >= 500)) {
+      const delay = RETRY_DELAYS[MAX_RETRIES - retries]
+      await new Promise((resolve) => setTimeout(resolve, delay))
+      return fetchWithRetry(url, options, retries - 1)
+    }
+    throw error
+  }
+}
+
 async function request(path, { method = 'GET', body, auth = false, headers = {} } = {}) {
   const authHeader = auth ? await getAuthHeader() : {}
 
-  const response = await fetchWithTimeout(`${API_BASE_URL}${path}`, {
+  const response = await fetchWithRetry(`${API_BASE_URL}${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -78,7 +93,7 @@ async function request(path, { method = 'GET', body, auth = false, headers = {} 
 
 async function requestRaw(path, { method = 'POST', body, auth = false, headers = {} } = {}) {
   const authHeader = auth ? await getAuthHeader() : {}
-  const response = await fetchWithTimeout(`${API_BASE_URL}${path}`, { method, headers: { ...authHeader, ...headers }, body })
+  const response = await fetchWithRetry(`${API_BASE_URL}${path}`, { method, headers: { ...authHeader, ...headers }, body })
   const payload = await response.json().catch(() => null)
   if (!response.ok) {
     const message = payload?.error?.message || payload?.message || `Request failed with status ${response.status}`
