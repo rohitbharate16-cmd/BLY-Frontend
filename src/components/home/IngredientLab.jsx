@@ -65,44 +65,30 @@ export default function IngredientLab({ products = [] }) {
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
           <div className="lg:col-span-7">
             <div className="relative aspect-[16/10] w-full overflow-hidden border border-[#E8DED2]">
-              <AnimatePresence initial={false}>
-                <motion.div
-                  key={stage.id}
-                  className="absolute inset-0"
-                  style={{ background: stage.tint }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6, ease: premiumEase }}
+              <motion.div
+                className="absolute inset-0"
+                style={{ background: stage.tint }}
+                transition={{ duration: 0.6, ease: premiumEase }}
+              />
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.img
+                  key={productImage || stage.id}
+                  src={productImage ? optimizedImage(productImage, 1200) : undefined}
+                  alt={product?.name || stage.heading}
+                  className="absolute inset-0 h-full w-full object-contain p-8"
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.55, ease: premiumEase }}
+                  onError={() => setImageFailed(true)}
                 />
               </AnimatePresence>
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <AnimatePresence initial={false}>
-                  {productImage && !imageFailed && (
-                    <motion.img
-                      key={product.id ?? stage.id}
-                      src={optimizedImage(productImage, 1200)}
-                      alt={product.name}
-                      className="h-[62%] w-auto object-contain drop-shadow-[0_30px_40px_rgba(46,33,28,0.28)]"
-                      initial={{ opacity: 0, scale: 0.97 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.97 }}
-                      transition={{ duration: 0.55, ease: premiumEase }}
-                      onError={() => setImageFailed(true)}
-                    />
-                  )}
-                  {(!productImage || imageFailed) && (
-                    <motion.div
-                      key={`${stage.id}-fallback`}
-                      className="h-[62%] w-auto max-w-[70%] rounded-full border border-espresso/20 bg-cream/80"
-                      initial={{ opacity: 0, scale: 0.97 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.55, ease: premiumEase }}
-                    />
-                  )}
-                </AnimatePresence>
-              </div>
+              {(!productImage || imageFailed) && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-[40%] w-[40%] rounded-full border border-espresso/20 bg-cream/80" />
+                </div>
+              )}
 
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-espresso/15 via-transparent to-transparent" />
             </div>

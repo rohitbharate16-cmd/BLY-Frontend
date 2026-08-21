@@ -109,7 +109,7 @@ export default function About() {
                 type="image"
                 src={gallery[1] || gallery[0]}
                 alt="From our shelves to yours"
-                className="relative mx-auto aspect-[4/5] w-full max-w-md border border-[#E8DED2] shadow-[0_30px_60px_-30px_rgba(46,33,28,0.35)] lg:ml-auto"
+                className="relative aspect-[4/5] w-full border border-[#E8DED2] shadow-[0_30px_60px_-30px_rgba(46,33,28,0.35)]"
               >
                 {!gallery.length && (
                   <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_30%_18%,#fffdf9,transparent_28%),linear-gradient(145deg,#d9cab8,#f4eee5_55%,#bc9e84)]">

@@ -46,6 +46,7 @@ export default function ProductCard({ product, className }) {
           widths={[360, 720]}
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 50vw"
           loading="lazy"
+          fallbackClassName="bg-[#F5F0EA]"
         />
 
         {/* bottom gradient for legibility of quick-add bar */}
