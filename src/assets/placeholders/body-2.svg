@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="BLY body product">
+  <defs>
+    <linearGradient id="bgBody2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#EFE8DD"/>
+      <stop offset="100%" stop-color="#F7F3EC"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bgBody2)"/>
+  <circle cx="400" cy="440" r="190" fill="none" stroke="#B39A7A" stroke-width="1" opacity="0.5"/>
+  <rect x="355" y="340" width="90" height="260" rx="45" fill="#FFFFFF" stroke="#5A463B" stroke-width="1.5"/>
+  <rect x="378" y="305" width="44" height="45" rx="4" fill="#8C7768"/>
+  <line x1="355" y1="450" x2="445" y2="450" stroke="#B39A7A" stroke-width="1"/>
+  <text x="400" y="520" text-anchor="middle" font-family="Manrope, sans-serif" font-size="13" letter-spacing="2" fill="#5A463B">BLY</text>
+  <text x="400" y="930" text-anchor="middle" font-family="Manrope, sans-serif" font-size="15" letter-spacing="6" fill="#5A463B">BODY</text>
+</svg>
