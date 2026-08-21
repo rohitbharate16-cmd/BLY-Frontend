@@ -55,10 +55,13 @@ export default function CinematicMedia({
   useEffect(() => {
     if (eager || inView) return
     const node = containerRef.current
-    if (!node || typeof IntersectionObserver === 'undefined') {
+    if (!node) return
+
+    if (typeof IntersectionObserver === 'undefined') {
       setInView(true)
       return undefined
     }
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
@@ -70,6 +73,17 @@ export default function CinematicMedia({
     )
     observer.observe(node)
     return () => observer.disconnect()
+  }, [eager, inView])
+
+  useEffect(() => {
+    if (eager || inView) return
+    const node = containerRef.current
+    if (!node) return
+    const rect = node.getBoundingClientRect()
+    const windowHeight = window.innerHeight || 0
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      setInView(true)
+    }
   }, [eager, inView])
 
   const showMotionMedia = type !== 'image' && inView && !videoFailed && !(type === 'video' && prefersReducedMotion)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { cls } from '../../utils/cls'
 import { premiumEase } from './variants'
@@ -90,18 +90,41 @@ export function StaggerItem({ children, className }) {
 
 export function ImageReveal({ src, alt, className, imageClassName, loading = 'lazy', priority = false, eager = false, imageWidth = 900 }) {
   const [failed, setFailed] = useState(false)
+  const [isInView, setIsInView] = useState(eager)
   const showFallback = !src || failed
+  const containerRef = useRef(null)
 
   useEffect(() => {
     setFailed(false)
   }, [src])
 
+  useEffect(() => {
+    if (eager || isInView) return
+    const node = containerRef.current
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      setIsInView(true)
+      return undefined
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setIsInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px 0px' },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [eager, isInView])
+
   return (
     <motion.div
+      ref={containerRef}
       className={cls('overflow-hidden', className)}
       initial="hidden"
-      animate={eager ? 'visible' : undefined}
-      whileInView={eager ? undefined : 'visible'}
+      animate={isInView ? 'visible' : undefined}
+      whileInView={isInView ? undefined : 'visible'}
       viewport={viewport}
       variants={mediaVariants}
     >

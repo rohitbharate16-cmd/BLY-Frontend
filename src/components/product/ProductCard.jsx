@@ -42,7 +42,7 @@ export default function ProductCard({ product, className }) {
           src={image}
           alt={name}
           className="h-full w-full"
-          imageClassName="h-full w-full object-contain object-center transition-transform duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+          imageClassName="h-full w-full object-cover object-center transition-transform duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
           widths={[360, 720]}
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 50vw"
           loading="lazy"
