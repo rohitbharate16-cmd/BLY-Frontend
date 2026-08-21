@@ -1,9 +1,16 @@
 import { supabase } from '../lib/supabase'
 
 // Base URL of the backend API. Configure via VITE_API_URL in frontend/.env.
-// Falls back to a same-origin /api path (useful behind a dev proxy or a
-// reverse proxy in production).
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
+// Failing explicitly in production prevents the app from silently requesting
+// JSON from the frontend origin, which would return HTML and blank the page.
+const API_BASE_URL = import.meta.env.VITE_API_URL
+
+if (!API_BASE_URL) {
+  throw new Error(
+    'VITE_API_URL is not configured. ' +
+    'Set it in your deployment environment to point to your backend API.',
+  )
+}
 
 // A hung request (dropped connection, sleeping backend host) previously left
 // callers awaiting a promise that never resolved, which shows up to a

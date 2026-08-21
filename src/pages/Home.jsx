@@ -22,10 +22,13 @@ export default function Home() {
     let active = true
 
     async function fetchHomeProducts() {
+      setProductLoading(true)
+      setProductError(false)
+
       try {
         const [featuredProducts, bestsellerProducts, content] = await Promise.all([
-          getFeaturedProducts(),
-          getBestsellers(),
+          getFeaturedProducts().catch(() => []),
+          getBestsellers().catch(() => []),
           getHomeContent().catch(() => null),
         ])
         if (!active) return
