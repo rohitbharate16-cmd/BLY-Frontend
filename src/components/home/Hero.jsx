@@ -13,7 +13,7 @@ export default function Hero({ product, content }) {
   const copyTransition = (delay) => ({ duration: 0.9, delay, ease: premiumEase })
   const eyebrow = content?.eyebrow || 'A considered ritual'
   const title = content?.title || 'Beauty Lies in You.'
-  const subtitle = content?.subtitle || 'Thoughtfully created beauty for every version of you.'
+  const subtitle = content?.subtitle || 'Thoughtfully created beauty for every version of you. We believe in slow formulas, honest ingredients, and rituals that ask nothing of you except to show up for yourself.'
   const image = content?.imageUrl || product?.image
   const [imageFailed, setImageFailed] = useState(false)
   const showImage = image && !imageFailed

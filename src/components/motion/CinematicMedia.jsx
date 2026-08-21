@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { cls } from '../../utils/cls'
+import { optimizedImage } from '../../utils/image'
 
 /**
  * CinematicMedia
@@ -42,6 +43,7 @@ export default function CinematicMedia({
   const containerRef = useRef(null)
   const [inView, setInView] = useState(eager)
   const [videoFailed, setVideoFailed] = useState(false)
+  const [imageFailed, setImageFailed] = useState(false)
 
   // Lazy-load below-the-fold media: don't request video/gif bytes until the
   // section is actually about to enter the viewport.
@@ -67,6 +69,9 @@ export default function CinematicMedia({
 
   const showMotionMedia = type !== 'image' && inView && !videoFailed && !(type === 'video' && prefersReducedMotion)
   const stillSrc = fallbackSrc || poster || src
+  const optimizedStill = stillSrc ? optimizedImage(stillSrc, 1200) : null
+  const optimizedSrc = src ? optimizedImage(src, 1200) : null
+  const showImageFallback = type === 'image' && (!optimizedStill || imageFailed)
 
   return (
     <div ref={containerRef} className={cls('relative overflow-hidden', className)}>
@@ -89,25 +94,31 @@ export default function CinematicMedia({
 
       {type === 'gif' && showMotionMedia && (
         <img
-          src={src}
+          src={optimizedSrc}
           alt={alt}
           className={cls('h-full w-full object-cover', mediaClassName)}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
+          onError={() => setVideoFailed(true)}
         />
       )}
 
       {/* Static fallback: renders for type="image", before the motion asset
           has loaded, if the video failed, or when the person prefers
           reduced motion (a still frame instead of an autoplaying video). */}
-      {!showMotionMedia && stillSrc && (
+      {!showMotionMedia && optimizedStill && !imageFailed && !showImageFallback && (
         <img
-          src={stillSrc}
+          src={optimizedStill}
           alt={alt}
           className={cls('h-full w-full object-cover', mediaClassName)}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
+          onError={() => setImageFailed(true)}
         />
+      )}
+
+      {showImageFallback && (
+        <div className={cls('h-full w-full bg-[linear-gradient(145deg,#c5b5a1,#ede5da_52%,#a98d78)]', mediaClassName)} role="img" aria-label={alt} />
       )}
 
       {overlay && (

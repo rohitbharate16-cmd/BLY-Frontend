@@ -12,7 +12,7 @@ const logoUrl = 'https://scntzjkdhyqliphbrlif.supabase.co/storage/v1/object/publ
 const values = [
   {
     title: 'Slow, on purpose',
-    copy: 'We\u2019d rather ship one formula a year that we\u2019re proud of than ten that are merely fine.',
+    copy: 'We’d rather ship one formula a year that we’re proud of than ten that are merely fine.',
   },
   {
     title: 'Ingredients you can say out loud',
@@ -20,7 +20,7 @@ const values = [
   },
   {
     title: 'Made to be used, not shelved',
-    copy: 'Considered packaging, but never precious \u2014 this is for daily rituals, not display cases.',
+    copy: 'Considered packaging, but never precious — this is for daily rituals, not display cases.',
   },
 ]
 
@@ -38,12 +38,12 @@ const philosophyStages = [
   {
     id: 'ritual',
     label: 'Ritual',
-    copy: 'A few minutes, morning and night, that belong entirely to you \u2014 not a performance for anyone else.',
+    copy: 'A few minutes, morning and night, that belong entirely to you — not a performance for anyone else.',
   },
   {
     id: 'you',
     label: 'You',
-    copy: 'Beauty that looks like you on your best day and your most ordinary one. That\u2019s the whole point.',
+    copy: 'Beauty that looks like you on your best day and your most ordinary one. That’s the whole point.',
   },
 ]
 
@@ -211,7 +211,7 @@ export default function About() {
       </section>
 
       {/* Philosophy / Ritual: scroll-driven reveal */}
-      {gallery.length > 0 && <PhilosophyScroller images={gallery} />}
+      <PhilosophyScroller images={gallery} />
 
       {/* Values, with stronger visual hierarchy */}
       <section className="py-16 md:py-24">
@@ -219,7 +219,7 @@ export default function About() {
           <Reveal className="max-w-xl">
             <SectionLabel>WHAT WE BELIEVE</SectionLabel>
             <h2 className="font-display text-2xl text-espresso sm:text-3xl">
-              Three ideas we don\u2019t compromise on.
+              Three ideas we don’t compromise on.
             </h2>
           </Reveal>
 
@@ -247,10 +247,10 @@ export default function About() {
         <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
           <Reveal className="mx-auto max-w-2xl space-y-2">
             <motion.p className="font-display text-2xl italic text-cream sm:text-3xl">
-              We\u2019re not trying to reinvent you.
+              We’re not trying to reinvent you.
             </motion.p>
             <motion.p className="font-display text-2xl italic text-cream sm:text-3xl">
-              We\u2019re just here to help you feel like you, slightly more often.
+              We’re just here to help you feel like you, slightly more often.
             </motion.p>
             <Link to="/shop" className="btn-primary mt-8 inline-flex border-champagne bg-cream text-espresso hover:bg-champagne">
               DISCOVER THE EDIT
