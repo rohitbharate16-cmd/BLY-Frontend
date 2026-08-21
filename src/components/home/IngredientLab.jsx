@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Reveal from '../common/Reveal'
 import { premiumEase } from '../motion/variants'
