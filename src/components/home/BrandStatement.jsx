@@ -5,10 +5,10 @@ export default function BrandStatement() {
     <section className="py-20 md:py-28">
       <div className="container mx-auto px-6 lg:px-8">
         <Reveal className="space-y-2 text-center">
-          <p className="font-display text-2xl italic text-espresso">
+          <p className="font-display text-3xl italic text-espresso sm:text-4xl md:text-5xl">
             Beauty doesn't need to be defined.
           </p>
-          <p className="font-display text-2xl italic text-espresso">
+          <p className="font-display text-3xl italic text-espresso sm:text-4xl md:text-5xl">
             It begins with you.
           </p>
           <p className="mt-6 text-xs font-sans uppercase tracking-[0.3em] text-taupe">

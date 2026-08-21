@@ -54,9 +54,9 @@ export default function Home() {
       <BlyEdit products={featured} loading={productLoading} error={productError} />
       <DiscoverCategories />
       <BrandStatement />
-      <RitualMoment image={(featured[2] || bestsellers[0] || featured[0])?.image} />
+      <RitualMoment image={(bestsellers[0] || featured[2] || featured[0])?.image} />
       <IngredientLab products={featured.length ? featured : bestsellers} />
-      <FeaturedCampaign product={featured[1] || featured[0]} />
+      <FeaturedCampaign product={featured[3] || featured[1] || featured[0]} />
       <MostLoved products={bestsellers} loading={productLoading} error={productError} />
       <Newsletter />
     </>

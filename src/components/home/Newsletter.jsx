@@ -5,10 +5,10 @@ export default function Newsletter() {
     <section className="py-16 md:py-20">
       <div className="container mx-auto px-6 lg:px-8">
         <Reveal className="border-t border-[#E8DED2] pt-14 text-center">
-          <h2 className="font-display text-2xl text-espresso">
+          <h2 className="font-display text-3xl text-espresso sm:text-4xl">
             STAY IN THE KNOW
           </h2>
-          <p className="mt-2 text-sm text-taupe">
+          <p className="mt-2 text-base text-taupe">
             New collections, beauty notes and more.
           </p>
           <form

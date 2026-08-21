@@ -57,7 +57,7 @@ export default function About() {
       <section className="relative flex h-[86vh] min-h-[560px] items-end overflow-hidden bg-espresso">
         <CinematicMedia
           type="image"
-          src={gallery[0]}
+          src={gallery[4] || gallery[0]}
           alt="A BLY formula, up close"
           className="absolute inset-0 h-full w-full"
           overlay
@@ -69,7 +69,7 @@ export default function About() {
               <h1 className="max-w-2xl font-display text-4xl leading-[1.02] text-cream sm:text-6xl md:text-7xl">
                 Beauty Lies in You.
               </h1>
-              <p className="mt-5 max-w-md text-sm leading-relaxed text-cream/80 md:text-base">
+              <p className="mt-5 max-w-md text-base leading-relaxed text-cream/80 md:text-lg">
                 A quiet, considered brand for people who want their skin to feel like theirs again.
               </p>
             </Reveal>
@@ -107,7 +107,7 @@ export default function About() {
             <Reveal variant="media" delay={140}>
               <CinematicMedia
                 type="image"
-                src={gallery[1] || gallery[0]}
+                src={gallery[2] || gallery[1] || gallery[0]}
                 alt="From our shelves to yours"
                 className="relative aspect-[4/5] w-full border border-[#E8DED2] shadow-[0_30px_60px_-30px_rgba(46,33,28,0.35)]"
               >
@@ -134,7 +134,7 @@ export default function About() {
         <div className="container mx-auto px-6 lg:px-8">
           <Reveal className="max-w-xl">
             <SectionLabel>WHAT WE BELIEVE</SectionLabel>
-            <h2 className="font-display text-2xl text-espresso sm:text-3xl">
+            <h2 className="font-display text-3xl text-espresso sm:text-4xl">
               Three ideas we do not compromise on.
             </h2>
           </Reveal>
@@ -144,7 +144,7 @@ export default function About() {
               <StaggerItem key={value.title} className="relative bg-cream p-8 md:p-10">
                 <span className="font-display text-4xl text-champagne/70">{`0${index + 1}`}</span>
                 <h3 className="mt-6 font-display text-xl text-espresso">{value.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-brown">{value.copy}</p>
+                <p className="mt-3 text-base leading-relaxed text-brown">{value.copy}</p>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -155,17 +155,17 @@ export default function About() {
       <section className="relative flex h-[60vh] min-h-[420px] items-center overflow-hidden bg-espresso">
         <CinematicMedia
           type="image"
-          src={gallery[2] || gallery[0]}
+          src={gallery[3] || gallery[2] || gallery[0]}
           alt=""
           className="absolute inset-0 h-full w-full"
           overlay
         />
         <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
           <Reveal className="mx-auto max-w-2xl space-y-2">
-            <p className="font-display text-2xl italic text-cream sm:text-3xl">
+            <p className="font-display text-3xl italic text-cream sm:text-4xl">
               We are not trying to reinvent you.
             </p>
-            <p className="font-display text-2xl italic text-cream sm:text-3xl">
+            <p className="font-display text-3xl italic text-cream sm:text-4xl">
               We are just here to help you feel like you, slightly more often.
             </p>
             <Link to="/shop" className="btn-primary mt-8 inline-flex border-champagne bg-cream text-espresso hover:bg-champagne">

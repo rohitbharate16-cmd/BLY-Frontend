@@ -54,10 +54,10 @@ export default function IngredientLab({ products = [] }) {
           <span className="mb-4 block text-xs uppercase tracking-[0.18em] text-taupe">
             THE DAILY RHYTHM
           </span>
-          <h2 className="font-display text-2xl text-espresso sm:text-3xl">
+          <h2 className="font-display text-3xl text-espresso sm:text-4xl">
             One ritual, four moments.
           </h2>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-brown">
+          <p className="mt-3 max-w-md text-base leading-relaxed text-brown">
             A simple rhythm built around the way your skin actually lives — morning, midday, evening, and night.
           </p>
         </Reveal>
@@ -114,8 +114,8 @@ export default function IngredientLab({ products = [] }) {
             </div>
 
             <div className="mt-6">
-              <h3 className="font-display text-2xl text-espresso">{stage.heading}</h3>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-brown">{stage.copy}</p>
+              <h3 className="font-display text-3xl text-espresso">{stage.heading}</h3>
+              <p className="mt-3 max-w-sm text-base leading-relaxed text-brown">{stage.copy}</p>
               {product && (
                 <p className="mt-4 text-xs uppercase tracking-[0.14em] text-taupe">
                   Featuring — {product.name}

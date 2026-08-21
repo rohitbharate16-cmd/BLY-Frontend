@@ -9,7 +9,7 @@ export default function MostLoved({ products, loading, error }) {
       <div className="container mx-auto px-6 lg:px-8">
         <Reveal>
           <SectionLabel>MOST LOVED</SectionLabel>
-          <h2 className="font-display text-2xl text-espresso">
+          <h2 className="font-display text-3xl text-espresso sm:text-4xl">
             Our most-loved essentials, as chosen by you.
           </h2>
         </Reveal>

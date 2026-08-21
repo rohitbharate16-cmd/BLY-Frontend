@@ -10,7 +10,7 @@ export default function BlyEdit({ products, loading, error }) {
       <div className="container mx-auto px-6 lg:px-8">
         <Reveal>
           <SectionLabel>THE BLY EDIT</SectionLabel>
-          <h2 className="font-display text-2xl text-espresso">
+          <h2 className="font-display text-3xl text-espresso sm:text-4xl">
             A considered selection of everyday beauty essentials.
           </h2>
         </Reveal>

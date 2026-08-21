@@ -31,7 +31,7 @@ export default function RitualMoment({ image, videoSrc, videoPoster }) {
             <h2 className="font-display text-3xl leading-[1.05] text-cream sm:text-4xl md:text-5xl">
               This is what the ritual feels like.
             </h2>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/80">
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-cream/80">
               Texture, warmth, and a little quiet — the same feeling we chase in
               every formula, captured in motion.
             </p>

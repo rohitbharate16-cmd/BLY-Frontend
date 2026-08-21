@@ -25,7 +25,7 @@ export default function FeaturedCampaign({ product }) {
             <h2 className="max-w-md font-display text-3xl leading-[1.05] text-espresso md:text-4xl">
               A radiant complexion, refined.
             </h2>
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-brown">
+            <p className="mt-5 max-w-md text-base leading-relaxed text-brown">
               Meet the essentials that turn routine into ritual — cleanser, serum,
               and moisturizer working as one.
             </p>
