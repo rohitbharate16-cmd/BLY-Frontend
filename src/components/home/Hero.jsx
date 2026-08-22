@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react'
 import { premiumEase } from '../motion/variants'
 import { optimizedImage } from '../../utils/image'
@@ -9,17 +9,43 @@ const logoUrl = 'https://scntzjkdhyqliphbrlif.supabase.co/storage/v1/object/publ
 
 const highlights = ['Dermatologist-formulated', 'Clean, considered ingredients', 'Since 2026']
 
-export default function Hero({ product, content }) {
+export default function Hero({ product, content, images = [] }) {
   const copyTransition = (delay) => ({ duration: 0.9, delay, ease: premiumEase })
   const eyebrow = content?.eyebrow || 'A considered ritual'
   const title = content?.title || 'Beauty Lies in You.'
   const subtitle = content?.subtitle || 'Thoughtfully created beauty for every version of you. We believe in slow formulas, honest ingredients, and rituals that ask nothing of you except to show up for yourself.'
   const image = content?.imageUrl || product?.image
   const [imageFailed, setImageFailed] = useState(false)
-  const showImage = image && !imageFailed
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+
+  const slides = images.filter(Boolean)
+  const totalSlides = slides.length || (image ? 1 : 0)
+
+  useEffect(() => {
+    setCurrentSlide(0)
+    setImageFailed(false)
+  }, [images])
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides)
+    setImageFailed(false)
+  }, [totalSlides])
+
+  useEffect(() => {
+    if (totalSlides <= 1 || isPaused) return
+    const timer = window.setInterval(nextSlide, 5000)
+    return () => window.clearInterval(timer)
+  }, [totalSlides, isPaused, nextSlide])
+
+  const currentSrc = slides[currentSlide] || image
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#e9e1d6]">
+    <section
+      className="relative isolate overflow-hidden bg-[#e9e1d6]"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_17%_17%,rgba(255,255,255,.68),transparent_26%),radial-gradient(circle_at_88%_84%,rgba(174,142,112,.23),transparent_28%)]" />
       <div className="pointer-events-none absolute left-[8%] top-0 h-full border-l border-espresso/10" />
       <div className="pointer-events-none absolute right-[8%] top-0 h-full border-l border-espresso/10" />
@@ -60,9 +86,38 @@ export default function Hero({ product, content }) {
         <div className="relative lg:col-span-5">
           <motion.div className="absolute -left-6 top-8 hidden h-[calc(100%-4rem)] w-full border border-espresso/20 lg:block" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.1, delay: 0.1, ease: premiumEase }} />
           <motion.figure className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden bg-[#d5c8b8] shadow-[25px_32px_0_rgba(46,33,28,0.09),0_42px_64px_-42px_rgba(46,33,28,.65)] lg:max-w-none" initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }} animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }} transition={{ duration: 1.2, delay: 0.16, ease: premiumEase }}>
-            {showImage ? <motion.img src={optimizedImage(image, 1400)} srcSet={`${optimizedImage(image, 720)} 720w, ${optimizedImage(image, 1400)} 1400w`} sizes="(min-width: 1024px) 38vw, 100vw" alt={product?.name || title} className="h-full w-full object-cover object-center" loading="eager" decoding="async" fetchPriority="high" initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.8, delay: 0.16, ease: premiumEase }} onError={() => setImageFailed(true)} /> : <div className="h-full w-full bg-[linear-gradient(145deg,#c5b5a1,#ede5da_52%,#a98d78)]" />}
+            <AnimatePresence mode="wait">
+              {currentSrc && !imageFailed ? (
+                <motion.img
+                  key={currentSrc}
+                  src={optimizedImage(currentSrc, 1400)}
+                  srcSet={`${optimizedImage(currentSrc, 720)} 720w, ${optimizedImage(currentSrc, 1400)} 1400w`}
+                  sizes="(min-width: 1024px) 38vw, 100vw"
+                  alt={product?.name || title}
+                  className="absolute inset-0 h-full w-full object-cover object-center"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.9, ease: premiumEase }}
+                  onError={() => setImageFailed(true)}
+                />
+              ) : (
+                <div className="absolute inset-0 bg-[linear-gradient(145deg,#c5b5a1,#ede5da_52%,#a98d78)]" />
+              )}
+            </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-t from-espresso/45 via-transparent to-transparent" />
-            <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-paper sm:p-6"><div><p className="text-[10px] uppercase tracking-[0.2em] text-paper/70">The BLY ritual</p><p className="mt-1 font-display text-2xl leading-none">{product?.name || 'Made for your moment'}</p></div><span className="border border-paper/55 px-2 py-1 text-[10px] uppercase tracking-[0.14em]">01 / 01</span></figcaption>
+            <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-paper sm:p-6">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-paper/70">The BLY ritual</p>
+                <p className="mt-1 font-display text-2xl leading-none">{product?.name || 'Made for your moment'}</p>
+              </div>
+              <span className="border border-paper/55 px-2 py-1 text-[10px] uppercase tracking-[0.14em]">
+                {totalSlides > 0 ? `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}` : '01 / 01'}
+              </span>
+            </figcaption>
           </motion.figure>
           <motion.div
             className="absolute -bottom-7 -left-5 hidden h-24 w-24 items-center justify-center border border-espresso/25 bg-cream/95 p-4 shadow-[0_16px_26px_-18px_rgba(46,33,28,.55)] lg:flex"

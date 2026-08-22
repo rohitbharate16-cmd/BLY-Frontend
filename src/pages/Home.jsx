@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <>
-      <Hero product={featured.find((product) => product.id === homeContent?.featuredProductId) || featured[0]} content={homeContent} />
+      <Hero product={featured.find((product) => product.id === homeContent?.featuredProductId) || featured[0]} content={homeContent} images={[...new Set([homeContent?.imageUrl, ...featured.slice(0, 4).map(p => p.image), ...bestsellers.slice(0, 2).map(p => p.image)].filter(Boolean))]} />
       <BlyEdit products={featured} loading={productLoading} error={productError} />
       <DiscoverCategories />
       <BrandStatement />

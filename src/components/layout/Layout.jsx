@@ -5,6 +5,7 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import { PageTransition } from '../motion/Primitives'
 import GrainOverlay from '../motion/GrainOverlay'
+import ScrollToTop from '../common/ScrollToTop'
 
 function LoadingFallback() {
   return (
@@ -26,6 +27,7 @@ export default function Layout() {
     <>
       <GrainOverlay />
       <Navbar />
+      <ScrollToTop />
       <main className="flex-1">
         <Suspense fallback={<LoadingFallback />}>
           <AnimatePresence initial={false}>
