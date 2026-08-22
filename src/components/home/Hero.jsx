@@ -53,7 +53,7 @@ export default function Hero({ product, content, images = [] }) {
 
   useEffect(() => {
     if (totalSlides <= 1 || isPaused) return
-    const timer = window.setInterval(nextSlide, 5000)
+    const timer = window.setInterval(nextSlide, 3000)
     return () => window.clearInterval(timer)
   }, [totalSlides, isPaused, nextSlide])
 
@@ -118,10 +118,10 @@ export default function Hero({ product, content, images = [] }) {
                     loading="eager"
                     decoding="async"
                     fetchPriority="high"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.6, ease: premiumEase }}
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.5, ease: premiumEase }}
                     onError={() => setImageFailed(true)}
                   />
                 )}
