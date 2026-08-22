@@ -118,10 +118,10 @@ export default function Hero({ product, content, images = [] }) {
                     loading="eager"
                     decoding="async"
                     fetchPriority="high"
-                    initial={{ opacity: 0, scale: 1.04 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.5, ease: premiumEase }}
+                    initial={{ x: "100%", opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.7, ease: premiumEase }}
                     onError={() => setImageFailed(true)}
                   />
                 )}
