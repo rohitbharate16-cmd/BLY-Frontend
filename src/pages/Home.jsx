@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Hero from '../components/home/Hero'
 import BlyEdit from '../components/home/BlyEdit'
 import DiscoverCategories from '../components/home/DiscoverCategories'
@@ -48,9 +48,22 @@ export default function Home() {
     }
   }, [])
 
+  const heroImages = useMemo(() => {
+    const srcs = [
+      homeContent?.imageUrl,
+      ...featured.slice(0, 4).map((p) => p.image),
+      ...bestsellers.slice(0, 2).map((p) => p.image),
+    ].filter(Boolean)
+    return [...new Set(srcs)]
+  }, [homeContent?.imageUrl, featured, bestsellers])
+
+  const heroProduct = useMemo(() => {
+    return featured.find((product) => product.id === homeContent?.featuredProductId) || featured[0]
+  }, [featured, homeContent?.featuredProductId])
+
   return (
     <>
-      <Hero product={featured.find((product) => product.id === homeContent?.featuredProductId) || featured[0]} content={homeContent} images={[...new Set([homeContent?.imageUrl, ...featured.slice(0, 4).map(p => p.image), ...bestsellers.slice(0, 2).map(p => p.image)].filter(Boolean))]} />
+      <Hero product={heroProduct} content={homeContent} images={heroImages} />
       <BlyEdit products={featured} loading={productLoading} error={productError} />
       <DiscoverCategories />
       <BrandStatement />

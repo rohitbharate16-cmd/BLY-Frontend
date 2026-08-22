@@ -142,26 +142,26 @@ export default function ProductDetails() {
               visible: { transition: { delayChildren: 0.14, staggerChildren: 0.1 } },
             }}
           >
-            <motion.p variants={detailItemVariants} className="text-xs uppercase tracking-widest text-taupe">
+            <motion.p variants={detailItemVariants} className="text-xs uppercase tracking-[0.2em] text-taupe">
               {product.categoryName || product.category}
             </motion.p>
-            <motion.h1 variants={detailItemVariants} className="mt-2 font-display text-4xl leading-[0.95] text-espresso sm:text-5xl">
+            <motion.h1 variants={detailItemVariants} className="mt-3 font-display text-4xl leading-[0.95] text-espresso sm:text-5xl">
               {product.name}
             </motion.h1>
 
-            <motion.div variants={detailItemVariants} className="mt-3 flex items-center gap-2">
+            <motion.div variants={detailItemVariants} className="mt-4 flex items-center gap-2">
               <RatingDisplay rating={product.rating || 0} />
               <span className="text-xs text-taupe">({product.reviewCount} reviews)</span>
             </motion.div>
 
-            <motion.p variants={detailItemVariants} className="mt-5 text-2xl font-medium text-espresso">
+            <motion.p variants={detailItemVariants} className="mt-6 text-2xl font-medium text-espresso sm:text-3xl">
               &#8377;{product.price}
             </motion.p>
-            <motion.p variants={detailItemVariants} className="mt-5 max-w-xl text-base leading-relaxed text-brown">
+            <motion.p variants={detailItemVariants} className="mt-6 max-w-xl text-base leading-relaxed text-brown sm:text-lg">
               {product.shortDescription}
             </motion.p>
 
-            <motion.div variants={detailItemVariants} className="mt-7 flex items-center gap-4 border-y border-[#E8DED2] py-5">
+            <motion.div variants={detailItemVariants} className="mt-8 flex items-center gap-4 border-y border-[#E8DED2] py-5">
               <div className="flex items-center border border-[#E8DED2]">
                 <button
                   type="button"
@@ -188,7 +188,7 @@ export default function ProductDetails() {
             <AnimatePresence initial={false}>
               {addedToBag && (
                 <motion.p
-                  className="mt-3 text-xs uppercase tracking-[0.12em] text-taupe"
+                  className="mt-4 text-xs uppercase tracking-[0.12em] text-taupe"
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -200,29 +200,29 @@ export default function ProductDetails() {
               )}
             </AnimatePresence>
 
-            <motion.div variants={detailItemVariants} className="mt-8 space-y-7">
+            <motion.div variants={detailItemVariants} className="mt-10 space-y-8">
               <section>
-                <h2 className="text-xs uppercase tracking-[0.18em] text-espresso">Description</h2>
-                <p className="mt-3 text-sm leading-7 text-brown">{product.description || product.shortDescription}</p>
+                <h2 className="text-xs uppercase tracking-[0.22em] text-espresso">Description</h2>
+                <p className="mt-4 text-base leading-[1.75] text-brown sm:text-lg">{product.description || product.shortDescription}</p>
               </section>
 
               {product.howToUse && (
-                <section className="border-t border-[#E8DED2] pt-6">
-                  <h2 className="text-xs uppercase tracking-[0.18em] text-espresso">Ingredients & ritual details</h2>
-                  <p className="mt-3 whitespace-pre-line text-sm leading-7 text-brown">{product.howToUse}</p>
+                <section className="border-t border-[#E8DED2] pt-8">
+                  <h2 className="text-xs uppercase tracking-[0.22em] text-espresso">Ingredients & ritual details</h2>
+                  <p className="mt-4 whitespace-pre-line text-base leading-[1.75] text-brown sm:text-lg">{product.howToUse}</p>
                 </section>
               )}
 
-              <section className="border-t border-[#E8DED2] pt-6">
-                <h2 className="text-xs uppercase tracking-[0.18em] text-espresso">Product details</h2>
-                <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-brown">
+              <section className="border-t border-[#E8DED2] pt-8">
+                <h2 className="text-xs uppercase tracking-[0.22em] text-espresso">Product details</h2>
+                <dl className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3 text-base text-brown sm:text-lg">
                   {product.type && <><dt className="text-taupe">Type</dt><dd>{product.type}</dd></>}
                   <dt className="text-taupe">Category</dt><dd>{product.categoryName || product.category}</dd>
                   {product.concern && <><dt className="text-taupe">Concern</dt><dd>{product.concern}</dd></>}
                 </dl>
                 {(product.tags || []).length > 0 && (
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {product.tags.map((tag) => <span key={tag} className="border border-[#E8DED2] px-2 py-1 text-[10px] uppercase tracking-[0.12em] text-taupe">{tag}</span>)}
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {product.tags.map((tag) => <span key={tag} className="border border-[#E8DED2] px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-taupe">{tag}</span>)}
                   </div>
                 )}
               </section>

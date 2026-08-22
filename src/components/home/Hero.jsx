@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react'
@@ -19,13 +19,32 @@ export default function Hero({ product, content, images = [] }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 
-  const slides = images.filter(Boolean)
+  const slides = useMemo(() => images.filter(Boolean), [images])
   const totalSlides = slides.length || (image ? 1 : 0)
 
   useEffect(() => {
     setCurrentSlide(0)
     setImageFailed(false)
   }, [images])
+
+  useEffect(() => {
+    if (!slides.length) return
+    let cancelled = false
+
+    slides.forEach((src) => {
+      const img = new Image()
+      img.src = optimizedImage(src, 1400)
+      img.onload = img.onerror = () => {
+        if (!cancelled) {
+          // preload complete
+        }
+      }
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [slides])
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides)
@@ -86,28 +105,31 @@ export default function Hero({ product, content, images = [] }) {
         <div className="relative lg:col-span-5">
           <motion.div className="absolute -left-6 top-8 hidden h-[calc(100%-4rem)] w-full border border-espresso/20 lg:block" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.1, delay: 0.1, ease: premiumEase }} />
           <motion.figure className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden bg-[#d5c8b8] shadow-[25px_32px_0_rgba(46,33,28,0.09),0_42px_64px_-42px_rgba(46,33,28,.65)] lg:max-w-none" initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }} animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }} transition={{ duration: 1.2, delay: 0.16, ease: premiumEase }}>
-            <AnimatePresence mode="wait">
-              {currentSrc && !imageFailed ? (
-                <motion.img
-                  key={currentSrc}
-                  src={optimizedImage(currentSrc, 1400)}
-                  srcSet={`${optimizedImage(currentSrc, 720)} 720w, ${optimizedImage(currentSrc, 1400)} 1400w`}
-                  sizes="(min-width: 1024px) 38vw, 100vw"
-                  alt={product?.name || title}
-                  className="absolute inset-0 h-full w-full object-cover object-center"
-                  loading="eager"
-                  decoding="async"
-                  fetchPriority="high"
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.9, ease: premiumEase }}
-                  onError={() => setImageFailed(true)}
-                />
-              ) : (
+            <div className="absolute inset-0">
+              <AnimatePresence initial={false}>
+                {currentSrc && !imageFailed && (
+                  <motion.img
+                    key={currentSrc}
+                    src={optimizedImage(currentSrc, 1400)}
+                    srcSet={`${optimizedImage(currentSrc, 720)} 720w, ${optimizedImage(currentSrc, 1400)} 1400w`}
+                    sizes="(min-width: 1024px) 38vw, 100vw"
+                    alt={product?.name || title}
+                    className="absolute inset-0 h-full w-full object-cover object-center"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6, ease: premiumEase }}
+                    onError={() => setImageFailed(true)}
+                  />
+                )}
+              </AnimatePresence>
+              {(!currentSrc || imageFailed) && (
                 <div className="absolute inset-0 bg-[linear-gradient(145deg,#c5b5a1,#ede5da_52%,#a98d78)]" />
               )}
-            </AnimatePresence>
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-espresso/45 via-transparent to-transparent" />
             <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-paper sm:p-6">
               <div>
