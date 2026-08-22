@@ -104,7 +104,7 @@ export default function Hero({ product, content, images = [] }) {
 
         <div className="relative lg:col-span-5">
           <motion.div className="absolute -left-6 top-8 hidden h-[calc(100%-4rem)] w-full border border-espresso/20 lg:block" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.1, delay: 0.1, ease: premiumEase }} />
-          <motion.figure className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden bg-[#d5c8b8] shadow-[25px_32px_0_rgba(46,33,28,0.09),0_42px_64px_-42px_rgba(46,33,28,.65)] lg:max-w-none" initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }} animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }} transition={{ duration: 1.2, delay: 0.16, ease: premiumEase }}>
+          <motion.figure className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden bg-[#d5c8b8] shadow-[25px_32px_0_rgba(46,33,28,0.09),0_42px_64px_-42px_rgba(46,33,28,.65)] lg:max-w-none" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.0, ease: premiumEase }}>
             <div className="absolute inset-0">
               <AnimatePresence initial={false}>
                 {currentSrc && !imageFailed && (
@@ -118,9 +118,9 @@ export default function Hero({ product, content, images = [] }) {
                     loading="eager"
                     decoding="async"
                     fetchPriority="high"
-                    initial={{ x: "100%", opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: "-100%", opacity: 0 }}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.02 }}
                     transition={{ duration: 0.7, ease: premiumEase }}
                     onError={() => setImageFailed(true)}
                   />
